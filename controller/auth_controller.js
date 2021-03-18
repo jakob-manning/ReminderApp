@@ -6,7 +6,13 @@ let authController = {
   },
 
   register: (req, res) => {
-    res.render("auth/register");
+    res.render("auth/register", { email: undefined });
+  },
+
+  registerFromEmail: (req, res) => {
+    const email = req.body.email;
+    console.log(email)
+    res.render("auth/register", { email });
   },
 
   loginSubmit: (req, res) => {
