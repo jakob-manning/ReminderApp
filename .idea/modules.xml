@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/reminderAppStarterFile.iml" filepath="$PROJECT_DIR$/.idea/reminderAppStarterFile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Reminder App.iml" filepath="$PROJECT_DIR$/.idea/Reminder App.iml" />
     </modules>
   </component>
 </project>

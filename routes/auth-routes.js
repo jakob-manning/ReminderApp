@@ -1,5 +1,6 @@
 const express = require('express');
 
+const passport = require("../middleware/passport")
 const authController = require("../controller/auth_controller");
 
 const router = express.Router();
@@ -14,6 +15,11 @@ router.get("/*", (req, res) => res.redirect("/auth/login"));
 
 router.post("/register", authController.registerSubmit);
 
-router.post("/login", authController.loginSubmit);
+router.post("/login",
+    passport.authenticate("local", {
+        successRedirect: "/loggedIn",
+        failureRedirect: "/failed",
+    })
+);
 
 module.exports = router;

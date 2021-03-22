@@ -5,26 +5,46 @@ const LocalStrategy = require("passport-local").Strategy;
 // const FacebookStrategy = require('passport-facebook').Strategy;
 
 const User = require("../models/user");
-// const userController = require("../controllers/userController");
 
 passport.use(new LocalStrategy(
     {
         usernameField: "email",
         passwordField: "password",
     },
+    // function(username, password, cb) {
+    //     console.log("Authenticating:")
+    //     console.log(username)
+    //     return cb(null, username)
+    // }
+    // (email, password, done) => {
+    //     console.log("Passport Local Strategy Authenticating")
+    //     console.log(email);
+    //     console.log(password);
+    //
+    //     if ( email === "jakobmanning@gmail.com" ){
+    //         if (password === "testing"){
+    //             done(null, email);
+    //         }
+    //     }
+    //     return done(null, false);
+    // }
+
     async (email, password, done) => {
+
+        console.log(email);
+        console.log(password);
 
         //get user by email
         let user;
         try{
             user = await User.findOne( {email})
         }catch (e) {
-            return done(new Error("Unable to login. Please try again."), false);
+            return done(new Error("Unable to login. Please try again."));
         }
 
         //confirm that user exists
         if(!user){
-            return done(new Error("User doesn't exist, please try again."), false);
+            return done(new Error("User doesn't exist, please try again."));
         }
 
         //ask bcrypt to match passwords
@@ -32,10 +52,10 @@ passport.use(new LocalStrategy(
         try{
             isValidPassword = await bcrypt.compare(password, user.password);
         } catch (e) {
-            return done(new Error("Unable to log you in, please try again."), false);
+            return done(new Error("Unable to log you in, please try again."));
         }
         if(!isValidPassword){
-            return done(new Error("Wrong credentials, please try again."), false);
+            return done(new Error("Wrong credentials, please try again."));
         }
 
         //return login state accordingly
@@ -84,26 +104,15 @@ passport.use(new LocalStrategy(
 //     })
 // );
 
-passport.serializeUser(function (user, done) {
-    if(user.displayName){
-        user.name = user.displayName;
-    }
-    console.log("serializing user")
-    console.log(user);
-    done(null, user);
+passport.serializeUser(function(user, cb) {
+    cb(null, user.id);
 });
 
-passport.deserializeUser(function (obj, done) {
-    console.log("deserializing user")
-    console.log(obj);
-    done(null, obj);
-
-    // let user = userController.getUserById(id);
-    // if (user) {
-    //   done(null, user);
-    // } else {
-    //   done({ message: "User not found" }, null);
-    // }
+passport.deserializeUser(function(id, cb) {
+    User.findById(id, "-password", {},function (err, user){
+        if(err) return cb(err)
+        return cb(null, user)
+    });
 });
 
 module.exports = passport;
