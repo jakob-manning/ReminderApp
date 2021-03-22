@@ -17,6 +17,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.15.2",
+    "connect-mongo": "^4.4.0",
     "dotenv": "^8.2.0",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
