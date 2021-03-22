@@ -84,8 +84,6 @@ app.use((req, res, next) => {
     console.log(`Passport Session details are: `);
     console.log(req.session.passport);
 
-    console.log(`List of sessions are: `);
-    console.log(session.MemoryStore());
     next();
 });
 

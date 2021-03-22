@@ -11,13 +11,18 @@ router.post("/register/fromEmail", authController.registerFromEmail);
 
 router.get("/login", authController.login);
 
+router.get("/logout", ((req, res) => {
+    req.logout();
+    res.redirect("/");
+}));
+
 router.get("/*", (req, res) => res.redirect("/auth/login"));
 
 router.post("/register", authController.registerSubmit);
 
 router.post("/login",
     passport.authenticate("local", {
-        successRedirect: "/loggedIn",
+        successRedirect: "/reminder",
         failureRedirect: "/failed",
     })
 );
