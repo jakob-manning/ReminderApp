@@ -9,6 +9,7 @@ const morgan = require("morgan");
 
 const reminderRoutes = require("./routes/reminder-routes");
 const authRoutes = require("./routes/auth-routes");
+const checkAuth = require("./middleware/checkAuth");
 
 const PORT = process.env.PORT || 3001;
 const SESSION_DB_URL = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.49781.mongodb.net/${process.env.DB_DATABASE}?retryWrites=true&w=majority`
@@ -69,7 +70,7 @@ app.get('/login',
     });
 
 // Reminder Routes
-app.use('/reminder', reminderRoutes);
+app.use('/reminder', checkAuth.ensureAuthenticated, reminderRoutes);
 
 // Auth Routes
 app.use('/auth', authRoutes);
