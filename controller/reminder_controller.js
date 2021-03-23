@@ -1,4 +1,8 @@
+const mongoose = require("mongoose")
+
 let database = require("../database");
+const Reminder = require("../models/reminder");
+const User = require("../models/user");
 
 let remindersController = {
   list: (req, res) => {
@@ -24,15 +28,55 @@ let remindersController = {
     }
   },
 
-  create: (req, res) => {
-    //TODO: generalize away from Cindy
-    let reminder = {
-      id: database.cindy.reminders.length + 1,
-      title: req.body.title,
-      description: req.body.description,
-      completed: false,
-    };
-    database.cindy.reminders.push(reminder);
+  create: async (req, res, next) => {
+    //TODO: add error handling
+
+    //create reminder object
+    const {title, description, dueDate, image, address} = req.body;
+
+    //push to database
+    let newReminder;
+    try{
+      newReminder = new Reminder (
+          {
+            title,
+            description,
+            dueDate,
+            image,
+            address,
+            creationDate: new Date().getTime(),
+            creator: req.user.id,
+          }
+      )
+    } catch (e) {
+      return next(new Error("Unable to create reminder, please try again."))
+    }
+
+    //look for valid user
+    let user;
+    try {
+      user = await User.findById(req.user.id);
+    } catch (e) {
+      return next(new Error("Creating reminder failed, please try again."))
+    }
+    if(!user){
+      return next(new Error("Couldn't find user for provided ID."))
+    }
+
+    //save reminder and update user information as well
+    try{
+      const sess = await mongoose.startSession();
+      sess.startTransaction();
+      await newReminder.save( {session: sess});
+      user.reminders.push(newReminder);
+      await user.save({session: sess});
+      await sess.commitTransaction()
+    } catch (err) {
+      console.log(err)
+      return next(new Error("Failed to save reminder, please try again"))
+    }
+
+    //redirect
     res.redirect("/reminder");
   },
 

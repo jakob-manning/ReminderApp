@@ -47,7 +47,7 @@ let authController = {
     const newUser = new User({
       email,
       password: hashedPassword,
-      // reminders: []
+      reminders: []
     })
 
     //store user on the database
