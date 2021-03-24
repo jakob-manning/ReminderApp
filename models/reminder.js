@@ -4,10 +4,12 @@ const Schema = mongoose.Schema;
 
 const reminderSchema = new Schema({
     title: { type: String, required: true},
-    description: { type: String, required: true},
+    description: { type: String, required: false},
     completed: { type: Boolean, required: true},
-    dueDate: { type: String, required: false},
     creationDate: { type: Date, required: true},
+    tags: [{type: String, required: false}],
+    subTasks: [{type: String, required: false}],
+    dueDate: { type: String, required: false},
     creator: {type: mongoose.Types.ObjectId, required: true, ref: 'User'}
 })
 

@@ -52,7 +52,7 @@ let remindersController = {
     //TODO: add error handling
 
     //create reminder object
-    const {title, description, dueDate, image, address} = req.body;
+    const {title, description, dueDate, tags, subTasks} = req.body;
 
     //push to database
     let newReminder;
@@ -62,8 +62,8 @@ let remindersController = {
             title,
             description,
             dueDate,
-            image,
-            address,
+            tags,
+            subTasks,
             completed: false,
             creationDate: new Date().getTime(),
             creator: req.user.id,
