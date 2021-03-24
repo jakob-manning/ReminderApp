@@ -6,7 +6,23 @@
         <h3><strong><%= reminderItem.title %>: </strong></h3>
         <h4><%= reminderItem.description %></h4>
         <% if (reminderItem.dueDate) { %>
-          <span class="label">Due: <%= reminderItem.dueDate %></span>
+          <h5>Due: <span class="label"><%= reminderItem.dueDate %></span></h5>
+        <% } %>
+        <% if (reminderItem.tags.length > 0) { %>
+        <h4>Tags</h4>
+          <ul>
+            <% for (var i =0; i <reminderItem.tags.length;  i++ ) { %>
+              <li>  <%= reminderItem.tags[i] %> </li>
+            <% } %>
+          </ul>
+        <% } %>
+        <% if (reminderItem.subTasks.length > 0) { %>
+          <h4>SubTasks</h4>
+          <ul>
+            <% for (var i =0; i <reminderItem.subTasks.length;  i++ ) { %>
+              <li>  <%= reminderItem.subTasks[i] %> </li>
+            <% } %>
+          </ul>
         <% } %>
         <h4>Completed:
           <% if (reminderItem.completed == true) { %>
@@ -18,7 +34,7 @@
 
         <a class="btn btn-warning" href=<%= "/reminder/" + reminderItem.id + "/edit" %>>Edit</a>
 
-        <form class="deleteForm "method="POST" action=<%= "/reminder/delete/" + reminderItem.id %>>
+        <form class="deleteForm" method="POST" action=<%= "/reminder/delete/" + reminderItem.id %>>
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
 

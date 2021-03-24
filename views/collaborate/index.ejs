@@ -1,0 +1,17 @@
+<div class="container">
+  <h1 class="page-header">Users</h1>
+
+    <ul class="list-group">
+      <% users.forEach(function (user) { %>
+        <li class="list-group-item">
+            <h3><%= user.email %>: </h3>
+            <p>Number of tasks: <%= user.reminders.length %></p>
+            <form action="/reminder/new" method="GET">
+                <button type="submit" class="btn btn-success">Add Friend</button>
+            </form>
+        </li>
+      <% }) %>
+    </ul>
+    <br>
+
+</div>

@@ -5,7 +5,15 @@
       <input type="text" class="form-control" id="titleInput" placeholder="Title" name="title">
     </div>
     <div class="form-group">
-      <label for="description">Tags</label>
+      <label for="description">Due</label>
+      <input type="date" name="dueDate" min="2020-01-01" max="2200-12-31">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="tags">Tags</label>
       <ul id="tagList"></ul>
       <textarea hidden="true" class="form-control" id="tagOutput" rows="1" name="tags"></textarea>
       <textarea class="form-control" id="tagInput" rows="1" placeholder="Tag"></textarea>
@@ -13,12 +21,12 @@
       <button onclick="tagSubmit()" class="btn btn-secondary">Add Tag</button>
     </div>
     <div class="form-group">
-      <label for="description">Due</label>
-      <input type="date" name="dueDate" min="2020-01-01" max="2200-12-31">
-    </div>
-    <div class="form-group">
-      <label for="description">Description</label>
-      <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"></textarea>
+      <label for="subtasks">Subtasks</label>
+      <ul id="subTaskList"></ul>
+      <textarea hidden="true" class="form-control" id="subTaskOutput" rows="1" name="subTasks"></textarea>
+      <textarea class="form-control" id="subTaskInput" rows="1" placeholder="SubTasks"></textarea>
+      <br />
+      <button onclick="subTaskSubmit()" class="btn btn-secondary">Add SubTask</button>
     </div>
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
@@ -29,6 +37,11 @@ const tags = [];
 const newTag = document.getElementById("tagInput");
 const tagList = document.getElementById("tagList");
 const tagOutput = document.getElementById("tagOutput");
+
+const subTasks = [];
+const newSubTask = document.getElementById("subTaskInput");
+const subTaskList = document.getElementById("subTaskList");
+const subTaskOutput = document.getElementById("subTaskOutput");
 
 const tagSubmit = () => {
   event.preventDefault();
@@ -44,4 +57,20 @@ const tagSubmit = () => {
 
   console.log(tags);
 }
+
+const subTaskSubmit = () => {
+  event.preventDefault();
+  subTasks.push(newSubTask.value);
+
+  let li = document.createElement("li");
+  li.innerText = newSubTask.value;
+  subTaskList.appendChild(li);
+
+  subTaskOutput.innerHTML = subTasks;
+  newSubTask.value = "";
+  newSubTask.focus();
+
+  console.log(tags);
+}
+
 </script>

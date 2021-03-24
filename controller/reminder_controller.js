@@ -1,6 +1,5 @@
 const mongoose = require("mongoose")
 
-let database = require("../database");
 const Reminder = require("../models/reminder");
 const User = require("../models/user");
 
@@ -54,6 +53,16 @@ let remindersController = {
     //create reminder object
     const {title, description, dueDate, tags, subTasks} = req.body;
 
+    //split up tags and subtasks into an array
+    let tagsArray = [];
+    let subTaskArray = [];
+    if(tags){
+      tagsArray = tags.split(",");
+    }
+    if(subTasks){
+      subTaskArray = subTasks.split(",");
+    }
+
     //push to database
     let newReminder;
     try{
@@ -62,8 +71,8 @@ let remindersController = {
             title,
             description,
             dueDate,
-            tags,
-            subTasks,
+            tags: tagsArray,
+            subTasks: subTaskArray,
             completed: false,
             creationDate: new Date().getTime(),
             creator: req.user.id,
@@ -151,7 +160,6 @@ let remindersController = {
       return next(new Error("You're not authorized to edit this place."))
     }
 
-    //TODO: debug boolean
     //edit reminder contents
     const { title, description, completed, dueDate } = req.body;
     try{
@@ -196,6 +204,6 @@ let remindersController = {
 
     res.redirect("/reminder");
   },
-};
+  };
 
-module.exports = remindersController;
+  module.exports = remindersController;

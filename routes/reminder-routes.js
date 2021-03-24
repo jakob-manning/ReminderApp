@@ -1,8 +1,7 @@
 const express = require('express');
+const router = express.Router();
 
 const reminderController = require("../controller/reminder_controller");
-
-const router = express.Router();
 
 router.get("/", reminderController.list);
 

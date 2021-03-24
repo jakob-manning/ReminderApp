@@ -9,6 +9,7 @@ const morgan = require("morgan");
 
 const reminderRoutes = require("./routes/reminder-routes");
 const authRoutes = require("./routes/auth-routes");
+const collaborateRoutes = require("./routes/collaborate-routes");
 const checkAuth = require("./middleware/checkAuth");
 
 const PORT = process.env.PORT || 3001;
@@ -74,6 +75,9 @@ app.use('/reminder', checkAuth.ensureAuthenticated, reminderRoutes);
 
 // Auth Routes
 app.use('/auth', authRoutes);
+
+//Collaborate Routes
+app.use("/collaborate", collaborateRoutes)
 
 app.use((req, res, next) => {
     console.log(`User details are: `);
