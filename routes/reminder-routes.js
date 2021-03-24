@@ -8,9 +8,9 @@ router.get("/", reminderController.list);
 
 router.get("/new", reminderController.new);
 
-router.get("/:id", reminderController.listOne);
-
 router.get("/:id/edit", reminderController.edit);
+
+router.get("/:id", reminderController.listOne);
 
 router.post("/", reminderController.create);
 

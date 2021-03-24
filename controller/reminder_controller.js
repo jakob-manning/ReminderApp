@@ -5,27 +5,47 @@ const Reminder = require("../models/reminder");
 const User = require("../models/user");
 
 let remindersController = {
-  list: (req, res) => {
-    res.render("reminder/index", { reminders: database.cindy.reminders });
+
+  /** LIST - list all reminders for the current user **/
+  list: async (req, res, next) => {
+
+    let userID = req.user.id;
+
+    //Find reminders for current user
+    let reminders;
+    try{
+      reminders = await Reminder.find({ creator: userID });
+    } catch (e) {
+      return next(new Error("Failed to find reminders, please try again,"));
+    }
+    if(!reminders){
+      return next(new Error("No Reminders yet, try creating some."));
+    }
+
+    res.render("reminder/index", { reminders: reminders });
   },
 
   new: (req, res) => {
     res.render("reminder/create");
   },
 
-  listOne: (req, res) => {
-    //TODO: generalize away from Cindy
-
-    let reminderToFind = parseInt(req.params.id);
-    let searchResult = database.cindy.reminders.find(function (reminder) {
-      return reminder.id === reminderToFind;
-    });
-    if (!!searchResult) {
-      res.render("reminder/single-reminder", { reminderItem: searchResult });
-    } else {
-      // res.render("reminder/index", { reminders: database.cindy.reminders });
-      res.redirect("/reminder");
+  listOne: async (req, res, next) => {
+    //Find reminder on Database
+    let reminderID = req.params.id;
+    let reminder;
+    try{
+      reminder = await Reminder.findById(reminderID);
+    } catch (e) {
+      return next(new Error("Failed to find reminder, please try again"));
     }
+    if(!reminder) return next(new Error("Reminder doesn't exist."));
+
+    //confirm user has permission to view this item
+    if(reminder.creator.toString() !== req.user.id){
+      return next(new Error("You're not authorized to view this place."))
+    }
+
+    res.render("reminder/single-reminder", { reminderItem: reminder });
   },
 
   create: async (req, res, next) => {
@@ -44,6 +64,7 @@ let remindersController = {
             dueDate,
             image,
             address,
+            completed: false,
             creationDate: new Date().getTime(),
             creator: req.user.id,
           }
@@ -80,72 +101,99 @@ let remindersController = {
     res.redirect("/reminder");
   },
 
-  edit: (req, res) => {
-    //TODO: generalize away from Cindy
-    let reminderToFind = parseInt(req.params.id);
-    let searchResult = database.cindy.reminders.find(function (reminder) {
-      return reminder.id === reminderToFind;
-    });
-    res.render("reminder/edit", { reminderItem: searchResult });
+  edit: async (req, res, next) => {
+    //Find Item
+    let reminderID = req.params.id;
+    let reminder;
+    try{
+      reminder = await Reminder.findById(reminderID);
+    } catch (e) {
+      return next(new Error("Failed to find item, please try again."));
+    }
+    if(!reminder){
+      return next(new Error("Reminder doesn't exist."));
+    }
+
+    //confirm that current user is authorized
+    if(reminder.creator.toString() !== req.user.id){
+      return next(new Error("You're not authorized to edit this place."))
+    }
+
+    // res.render("reminder");
+    res.render("reminder/edit",
+        {
+          reminderItem:
+              {
+                title: reminder.title,
+                description: reminder.description,
+                completed: reminder.completed,
+                dueDate: reminder.dueDate,
+                id: reminder.id,
+              }
+        });
   },
 
-  update: (req, res, next) => {
-    const idOfReqParam = parseInt(req.params.id);
-
-    let reminderIndex;
+  update: async (req, res, next) => {
+    //find specific reminder
+    let reminderID = req.params.id;
+    let reminder;
     try{
-
-      //find item in database with the requested ID
-      reminderIndex = database.cindy.reminders.findIndex(reminder => reminder.id === idOfReqParam);
-
-      //confirm that the item exists
-      if(reminderIndex === undefined){
-        throw new Error();
-      }
-
-      console.log("Reminder Index");
-      console.log(reminderIndex);
-
-      //destructure form data
-      const { title, description, completed } = req.body;
-
-      //confirm that form data exists
-      if(!title || !description || completed === undefined){
-        throw new Error();
-      }
-
-
-      //overwrite item
-      database.cindy.reminders[reminderIndex] = { id:idOfReqParam, title, description, completed: !!completed}
-
+      reminder = await Reminder.findById(reminderID);
     } catch (e) {
-      //TODO: redirect to a proper error handling page (create a new view + payload for accepting error message?)
-      return next(new Error("Couldn't update that entry."))
+      return next(new Error("Failed to find reminder, please try again."))
     }
+    if(!reminder){
+      return next(new Error("Reminder ID invalid."))
+    }
+
+    //check that the current user has permission to edit this place
+    if(reminder.creator.toString() !== req.user.id){
+      return next(new Error("You're not authorized to edit this place."))
+    }
+
+    //TODO: debug boolean
+    //edit reminder contents
+    const { title, description, completed, dueDate } = req.body;
+    try{
+      reminder = await Reminder.findByIdAndUpdate(reminderID, {title, description, completed, dueDate});
+    } catch (e) {
+      return next(new Error("Failed to update place, please try again."));
+    }
+
     res.redirect("/reminder");
   },
 
-  delete: (req, res, next) => {
-    const idOfReqParam = parseInt(req.params.id);
+  delete: async (req, res, next) => {
+    const reminderID = req.params.id;
 
-    let reminderIndex;
+    //Find place and populate with creator
+    let reminderToDelete;
     try {
-
-      //find item in database with the requested ID
-      reminderIndex = database.cindy.reminders.findIndex(reminder => reminder.id === idOfReqParam);
-
-      //confirm that the item exists
-      if(reminderIndex === undefined){
-        throw new Error();
-      }
-
-      //delete that item (using splice)
-      database.cindy.reminders.splice(reminderIndex, 1);
-
+      reminderToDelete = await Reminder.findById(reminderID).populate("creator");
     } catch (e) {
-      //TODO: redirect to a proper error handling page (create a new view + payload for accepting error message?)
-      return next(new Error("Couldn't delete that entry."))
+      return next(new Error("Failed to find place, please try again."));
     }
+
+    //confirm that place exists
+    if(!reminderToDelete) return next(new Error("Can't find reminder, invalid ID."));
+
+    //check that the current user has permission to delete this place
+    if(reminderToDelete.creator.id !== req.user.id){
+      return next(new Error("You're not authorized to delete this place."))
+    }
+
+    try {
+      const sess = await mongoose.startSession();
+      sess.startTransaction();
+      await reminderToDelete.remove( {session: sess});
+      reminderToDelete.creator.reminders.pull(reminderID);
+      await reminderToDelete.creator.save({session: sess});
+      await sess.commitTransaction()
+    } catch (e) {
+      console.log(e);
+      return next(new Error("Something went wrong, couldn't delete reminder."))
+    }
+
     res.redirect("/reminder");
   },
 };
