@@ -18,6 +18,21 @@ let collaborateController = {
 
         //render them in an EJS view
         res.render("collaborate/index", { users: users });
+    },
+
+    add: (req, res, next) => {
+        // initialize variables
+        let currentUser;
+        let newFriend;
+
+        try{
+
+        } catch (e) {
+            return next(new Error("Failed to add new friend, please try again."))
+        }
+
+
+        res.redirect("/collaborate");
     }
 
 };

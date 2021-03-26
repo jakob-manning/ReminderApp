@@ -5,4 +5,6 @@ const collaborateController = require("../controller/collaborate_controller");
 
 router.get("/", collaborateController.list);
 
+router.post("/add/:id", collaborateController.add);
+
 module.exports = router;

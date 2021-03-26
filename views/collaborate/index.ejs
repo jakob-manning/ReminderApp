@@ -1,13 +1,19 @@
 <div class="container">
   <h1 class="page-header">Users</h1>
 
+    <div class="input-group">
+        <input id="search" type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+               aria-describedby="search-addon" />
+    </div>
+    <br />
+
     <ul class="list-group">
       <% users.forEach(function (user) { %>
         <li class="list-group-item">
-            <h3><%= user.email %>: </h3>
+            <h3 class="users"><%= user.email %>: </h3>
             <p>Number of tasks: <%= user.reminders.length %></p>
-            <form action="/reminder/new" method="GET">
-                <button type="submit" class="btn btn-success">Add Friend</button>
+            <form method="POST" action=<%= "/collaborate/add/" + user.id %> >
+                <button name="<%=user.id%>" type="submit" class="btn btn-success">Add Friend</button>
             </form>
         </li>
       <% }) %>
@@ -15,3 +21,34 @@
     <br>
 
 </div>
+
+<script>
+    //get text from search bar
+    let searchBar = document.getElementById("search");
+
+    //get all users
+    let userElements = document.getElementsByClassName("users")
+
+    //initialize searchPhrase
+    let searchPhrase;
+
+    //On search input, search user emails and hide/show elements as needed
+    const searchInputHandler = () => {
+        searchPhrase = searchBar.value;
+        for(let item of userElements){
+            let parent = item.parentElement;
+            if(item.innerText.search(new RegExp(searchPhrase, "i")) === -1){
+                parent.hidden = true;
+            }
+            else{
+                parent.hidden = false;
+            }
+
+            console.log(item.innerText);
+        }
+    }
+
+    searchBar.oninput = searchInputHandler;
+
+    //
+</script>
