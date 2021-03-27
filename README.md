@@ -13,7 +13,7 @@ https://reminder-app-3000.herokuapp.com/
 Server-session model using hashed passwords and an external database  
 Routes are protected and users are automatically redirected when requesting forbidden routes
 
-###Mongo-DB Fully Implemented
+###Mongo-DB Implementation
 Users, Sessions, and Data are stored on a MongoDB Atlas database.
 
 ###API End Points
@@ -28,8 +28,14 @@ Users have arrays for "friends" and "followed by" pointing to other users
 ###Mongoose Data Schemas
 Schemas are enforced by Mongoose
 
+###Model View Controller with EJS "Views"
+Views are provided via the EJS templating engine
+
 ###External Photo API
 Profile photos are automatically generated using the randomuser.me api.
+
+###Hosting with Heroku
+Updates are pushed live to Heroku
 
 ###Robust Error Handling
 All errors are handled in try/catch blocks with fallbacks.

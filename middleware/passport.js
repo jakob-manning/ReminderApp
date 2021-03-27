@@ -9,28 +9,8 @@ passport.use(new LocalStrategy(
         usernameField: "email",
         passwordField: "password",
     },
-    // function(username, password, cb) {
-    //     console.log("Authenticating:")
-    //     console.log(username)
-    //     return cb(null, username)
-    // }
-    // (email, password, done) => {
-    //     console.log("Passport Local Strategy Authenticating")
-    //     console.log(email);
-    //     console.log(password);
-    //
-    //     if ( email === "jakobmanning@gmail.com" ){
-    //         if (password === "testing"){
-    //             done(null, email);
-    //         }
-    //     }
-    //     return done(null, false);
-    // }
 
     async (email, password, done) => {
-
-        console.log(email);
-        console.log(password);
 
         //get user by email
         let user;

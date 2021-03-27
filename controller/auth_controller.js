@@ -13,7 +13,6 @@ let authController = {
 
   registerFromEmail: (req, res) => {
     const email = req.body.email;
-    console.log(email)
     res.render("auth/register", { email });
   },
 

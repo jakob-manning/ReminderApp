@@ -28,8 +28,6 @@ let collaborateController = {
         }
         let imageData;
         try{
-            console.log("API response picture");
-            console.log(userAPIResponse.data);
             imageData = userAPIResponse.data;
         } catch (e) {
             imageData = {};
@@ -78,9 +76,6 @@ let collaborateController = {
             return next(new Error("Failed to add new friend, please try again."));
         }
 
-        console.log(currentUser.email);
-        console.log(newFriend.email);
-
         res.redirect("/collaborate");
     },
 
@@ -115,9 +110,6 @@ let collaborateController = {
         } catch (e) {
             return next(new Error("Failed to remove friend, please try again."));
         }
-
-        console.log(currentUser.email);
-        console.log(oldFriend.email);
 
         res.redirect("/collaborate");
     },
