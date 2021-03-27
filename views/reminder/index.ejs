@@ -1,19 +1,12 @@
 <div class="container">
+    <br />
   <h1 class="page-header">Your Reminders</h1>
-
+    <form action="/reminder/new" method="GET">
+        <button type="submit" class="btn btn-success">Add New</button>
+    </form>
+    <br />
     <ul class="list-group">
       <% reminders.forEach(function (reminderItem) { %>
-<!--            <a class="pull-left btn" href=<%= "/reminder/" + reminderItem.id %>>-->
-<!--                <li class="list-group-item">-->
-<!--                      <strong><%= reminderItem.title %>: </strong>-->
-<!--                      <%= reminderItem.description %>-->
-<!--                      <% if (reminderItem.completed == true) { %>-->
-<!--                        <span class="badge badge-success">Completed</span>-->
-<!--                      <% } else if (reminderItem.completed == false) { %>-->
-<!--                        <span class="badge badge-danger">To Do</span>-->
-<!--                      <% } %>-->
-<!--                </li>-->
-<!--            </a>-->
             <div class="card">
                 <div class="card-header">
                     <strong>
@@ -37,25 +30,34 @@
         <br />
       <% }) %>
     </ul>
-    <form action="/reminder/new" method="GET">
-        <button type="submit" class="btn btn-success">Add New</button>
-    </form>
-    <br />
     <hr class="rounded">
     <br />
     <h1 class="page-header">Your Friend's Reminders</h1>
     <ul class="list-group">
-        <% reminders.forEach(function (reminderItem) { %>
-            <li class="list-group-item">
-                <strong><%= reminderItem.title %>: </strong>
-                <%= reminderItem.description %>
-                <% if (reminderItem.completed == true) { %>
-                    <span class="badge badge-success">Completed</span>
-                <% } else if (reminderItem.completed == false) { %>
-                    <span class="badge badge-danger">To Do</span>
-                <% } %>
-            </li>
-        <% }) %>
+        <% if (friendReminders) { %>
+            <% friendReminders.forEach(function (reminderItem) { %>
+                <div class="card">
+                    <div class="card-header">
+                        <strong>
+                            <%= reminderItem.dueDate %>
+                        </strong>
+                        <strong class="badge badge-secondary"><%= reminderItem.creator.email %> </strong>
+                        <% if (reminderItem.completed == true) { %>
+                            <span class="badge badge-success">Done</span>
+                        <% } else if (reminderItem.completed == false) { %>
+                            <span class="badge badge-info">To Do</span>
+                        <% } %>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= reminderItem.title %>
+                        </h5>
+                        <p class="card-text"><%= reminderItem.description %></p>
+                    </div>
+                </div>
+            <br/>
+            <% }) %>
+        <% } %>
     </ul>
     <br />
     <br />

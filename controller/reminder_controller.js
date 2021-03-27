@@ -21,7 +21,31 @@ let remindersController = {
       return next(new Error("No Reminders yet, try creating some."));
     }
 
-    res.render("reminder/index", { reminders: reminders });
+    // FETCH FRIENDS REMINDERS
+    //get current user and their friends
+    let user;
+    try{
+      user = await User.findById(userID);
+    } catch (e) {
+      console.log(e);
+      return next(new Error("Failed to find user, please try again"))
+    }
+    if(!user){
+      return next(new Error("Current user doesn't exist, try signing in?"))
+    }
+
+    let friends = user.friends;
+
+    //get all reminders that belong to one of a users friends
+    let friendReminders;
+    try{
+      friendReminders = await Reminder.find( {creator: { $in : friends}}).populate('creator')
+    } catch (e) {
+      console.log(e);
+      return next(new Error("Failed to find friend's reminders, please try again,"));
+    }
+
+    res.render("reminder/index", { reminders, friendReminders });
   },
 
   new: (req, res) => {
