@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 
 const Reminder = require("../models/reminder");
 const User = require("../models/user");
+const axios = require("axios");
 
 let remindersController = {
 
@@ -45,7 +46,16 @@ let remindersController = {
       return next(new Error("Failed to find friend's reminders, please try again,"));
     }
 
-    res.render("reminder/index", { reminders, friendReminders });
+    //UNSPLASH API - Set Up Profile Photo
+    let unsplashResponse;
+    try{
+      unsplashResponse = await axios.get(`https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH_ACCESS_KEY}`);
+    } catch (e) {
+      console.log("unsplash api error")
+      console.log(e);
+    }
+
+    res.render("reminder/index", { reminders, friendReminders, image: unsplashResponse.data.urls.small });
   },
 
   new: (req, res) => {

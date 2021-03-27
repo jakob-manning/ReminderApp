@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const mongoose = require("mongoose");
+const axios = require("axios");
 
 let collaborateController = {
     list: async (req, res, next) => {
@@ -17,8 +18,17 @@ let collaborateController = {
             return next("No other users yet!");
         }
 
-        //render them in an EJS view
-        res.render("collaborate/index", { users: users, currentUser: userID });
+        //UNSPLASH API
+        let unsplashResponse;
+        try{
+            unsplashResponse = await axios.get(`https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH_ACCESS_KEY}&count=20`);
+        } catch (e) {
+            console.log("unsplash api error")
+            console.log(e);
+        }
+
+        //render users in an EJS view
+        res.render("collaborate/index", { users: users, currentUser: userID, image: unsplashResponse.data });
     },
 
     add: async (req, res, next) => {
