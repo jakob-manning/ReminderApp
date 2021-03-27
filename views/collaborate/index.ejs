@@ -12,9 +12,19 @@
         <li class="list-group-item">
             <h3 class="users"><%= user.email %>: </h3>
             <p>Number of tasks: <%= user.reminders.length %></p>
-            <form method="POST" action=<%= "/collaborate/add/" + user.id %> >
-                <button name="<%=user.id%>" type="submit" class="btn btn-success">Add Friend</button>
-            </form>
+
+            <% if(user.followedBy.length > 0) { %>
+                <% if(user.followedBy.find(id => id == currentUser)) { %>
+                <form method="POST" action=<%= "/collaborate/remove/" + user.id %> >
+                    <button name="<%=user.id%>" type="submit" class="btn btn-danger">Unfollow</button>
+                </form>
+                <% } %>
+            <% } else { %>
+                <form method="POST" action=<%= "/collaborate/add/" + user.id %> >
+                    <button name="<%=user.id%>" type="submit" class="btn btn-success">Follow</button>
+                </form>
+            <% } %>
+
         </li>
       <% }) %>
     </ul>

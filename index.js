@@ -77,7 +77,7 @@ app.use('/reminder', checkAuth.ensureAuthenticated, reminderRoutes);
 app.use('/auth', authRoutes);
 
 //Collaborate Routes
-app.use("/collaborate", collaborateRoutes)
+app.use("/collaborate", checkAuth.ensureAuthenticated, collaborateRoutes)
 
 app.use((req, res, next) => {
     console.log(`User details are: `);

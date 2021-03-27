@@ -7,4 +7,6 @@ router.get("/", collaborateController.list);
 
 router.post("/add/:id", collaborateController.add);
 
+router.post("/remove/:id", collaborateController.remove);
+
 module.exports = router;

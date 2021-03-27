@@ -18,10 +18,7 @@ let authController = {
   },
 
 
-
   registerSubmit: async (req, res, next) => {
-    //TODO: update error handling. Redirect on error to a message page.
-
     const { email, password } = req.body;
 
     //ensure email isn't already in the database
@@ -46,15 +43,14 @@ let authController = {
     //create user
     const newUser = new User({
       email,
-      password: hashedPassword,
-      reminders: []
+      password: hashedPassword
     })
 
     //store user on the database
     try{
       await newUser.save();
-      console.log(newUser);
     } catch (e) {
+      console.log(e);
       return next(new Error("Something went wrong, couldn't create user. Please try again."))
     }
 
