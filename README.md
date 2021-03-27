@@ -2,4 +2,5 @@
  A class project for BCIT 2912
 
 ## To Run
-node index.js
+- add a .env file with MongoDB connection string  
+- run "node index.js"

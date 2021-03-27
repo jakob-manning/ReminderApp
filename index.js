@@ -98,7 +98,7 @@ app.get('/*', (req, res) => res.redirect("/"));
 
 //Initialize Connection to Mongo-DB
 const DB_URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.49781.mongodb.net/${process.env.DB_DATABASE}?retryWrites=true&w=majority`
-mongoose.connect(DB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(DB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

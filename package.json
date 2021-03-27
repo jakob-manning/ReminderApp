@@ -1,20 +1,20 @@
 {
   "name": "reminderlist",
   "version": "1.0.0",
-  "description": "",
+  "description": "A snazy reminder app for your and your friends",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-start": "nodemon index.js",
+    "dev": "nodemon index.js",
     "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/jakob-manning/ReminderApp"
   },
-  "author": "",
+  "author": "Jakob Manning",
   "license": "ISC",
-  "homepage": "http",
+  "homepage": "",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.4.0",
