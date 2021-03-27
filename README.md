@@ -45,6 +45,3 @@ Errors and bad requests are presented to the user in a friendly error page with 
 
 ### User Search
 All users are presented at GET /collaborate. Users results can be filtered with the search box.
-
-### 404 Page
-Incomplete routes are redirected to a 404 page.
