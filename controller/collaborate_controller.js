@@ -21,19 +21,24 @@ let collaborateController = {
         //User Image API
         let userAPIResponse;
         try{
-            userAPIResponse = await axios.get(`https://randomuser.me/api/?results=100`);
+            userAPIResponse = await axios.get(`https://randomuser.me/api/?results=30`);
         } catch (e) {
             console.log("image api error")
             console.log(e);
         }
-        let imageData = "https://en.wikipedia.org/wiki/File:Tetsumonchi_profile_picture.png";
-        if(userAPIResponse){
-            try{
-                console.log("API response picture");
-                console.log(userAPIResponse.data);
-                imageData = userAPIResponse.data;
-            } catch (e) {
-                console.log(e);
+        let imageData;
+        try{
+            console.log("API response picture");
+            console.log(userAPIResponse.data);
+            imageData = userAPIResponse.data;
+        } catch (e) {
+            imageData = {};
+            imageData.results = []
+            let imageURL = "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Tetsumonchi_profile_picture.png/160px-Tetsumonchi_profile_picture.png"
+            for( let i = 0; i < 50; i ++){
+                imageData.results[i] = {};
+                imageData.results[i].picture = {};
+                imageData.results[i].picture.medium = imageURL
             }
         }
 

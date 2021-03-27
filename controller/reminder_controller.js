@@ -53,11 +53,9 @@ let remindersController = {
       console.log("image api error")
       console.log(e);
     }
-    let image = "https://en.wikipedia.org/wiki/File:Tetsumonchi_profile_picture.png";
+    let image = "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Tetsumonchi_profile_picture.png/160px-Tetsumonchi_profile_picture.png";
     if(userAPIResponse){
       try{
-        console.log("API response picture");
-        console.log(userAPIResponse.data.results[0].picture.medium);
         image = userAPIResponse.data.results[0].picture.medium;
       } catch (e) {
         console.log(e);
