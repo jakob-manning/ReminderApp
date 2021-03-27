@@ -26,9 +26,13 @@ let collaborateController = {
             console.log("unsplash api error")
             console.log(e);
         }
+        let image;
+        if(unsplashResponse){
+            image = unsplashResponse.data;
+        }
 
         //render users in an EJS view
-        res.render("collaborate/index", { users: users, currentUser: userID, image: unsplashResponse.data });
+        res.render("collaborate/index", { users: users, currentUser: userID, image });
     },
 
     add: async (req, res, next) => {

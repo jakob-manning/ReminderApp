@@ -54,8 +54,12 @@ let remindersController = {
       console.log("unsplash api error")
       console.log(e);
     }
+    let image;
+    if(unsplashResponse){
+      image = unsplashResponse.data.urls.small;
+    }
 
-    res.render("reminder/index", { reminders, friendReminders, image: unsplashResponse.data.urls.small });
+    res.render("reminder/index", { reminders, friendReminders, image });
   },
 
   new: (req, res) => {
