@@ -17,5 +17,4 @@ router.post("/update/:id", reminderController.update);
 
 router.post("/delete/:id", reminderController.delete);
 
-
 module.exports = router;
