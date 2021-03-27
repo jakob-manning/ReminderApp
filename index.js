@@ -106,7 +106,7 @@ db.once('open', function () {
     // Initialize server
     app.listen(PORT, function () {
         console.log(
-            "Server running. Visit: localhost:3001 in your browser 🚀"
+            `Server running on port:${PORT} 🚀`
         );
     });
 });
