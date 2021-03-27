@@ -6,10 +6,10 @@
 - run "node index.js"
 
 ## To View Live
-https://reminder-app-3000.herokuapp.com/)
+https://reminder-app-3000.herokuapp.com/
 
-# Features  
-### Authentication  
+# Features
+### Authentication
 Server-session model using hashed passwords and an external database  
 Routes are protected and users are automatically redirected when requesting forbidden routes
 
