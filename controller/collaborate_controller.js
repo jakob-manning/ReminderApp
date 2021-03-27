@@ -18,21 +18,27 @@ let collaborateController = {
             return next("No other users yet!");
         }
 
-        //UNSPLASH API
-        let unsplashResponse;
+        //User Image API
+        let userAPIResponse;
         try{
-            unsplashResponse = await axios.get(`https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH_ACCESS_KEY}&count=20`);
+            userAPIResponse = await axios.get(`https://randomuser.me/api/?results=100`);
         } catch (e) {
-            console.log("unsplash api error")
+            console.log("image api error")
             console.log(e);
         }
-        let image;
-        if(unsplashResponse){
-            image = unsplashResponse.data;
+        let imageData = "https://en.wikipedia.org/wiki/File:Tetsumonchi_profile_picture.png";
+        if(userAPIResponse){
+            try{
+                console.log("API response picture");
+                console.log(userAPIResponse.data);
+                imageData = userAPIResponse.data;
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         //render users in an EJS view
-        res.render("collaborate/index", { users: users, currentUser: userID, image });
+        res.render("collaborate/index", { users: users, currentUser: userID, imageData });
     },
 
     add: async (req, res, next) => {

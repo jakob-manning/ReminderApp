@@ -10,7 +10,7 @@
     <ul class="list-group">
       <% users.forEach(function (user, index) { %>
         <li class="list-group-item">
-            <img src="<%= image[index].urls.small %>" style="border-radius: 50%; width: 100px; height: 100px; float: left; margin-right: 20px; object-fit: cover;">
+            <img src="<%= imageData.results[index].picture.medium %>" style="border-radius: 50%; width: 100px; height: 100px; float: left; margin-right: 20px; object-fit: cover;">
             <h3 class="users"><%= user.email %>: </h3>
             <p>Number of tasks: <%= user.reminders.length %></p>
 

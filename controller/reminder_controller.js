@@ -46,17 +46,22 @@ let remindersController = {
       return next(new Error("Failed to find friend's reminders, please try again,"));
     }
 
-    //UNSPLASH API - Set Up Profile Photo
-    let unsplashResponse;
+    let userAPIResponse;
     try{
-      unsplashResponse = await axios.get(`https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH_ACCESS_KEY}`);
+      userAPIResponse = await axios.get(`https://randomuser.me/api/`);
     } catch (e) {
-      console.log("unsplash api error")
+      console.log("image api error")
       console.log(e);
     }
-    let image;
-    if(unsplashResponse){
-      image = unsplashResponse.data.urls.small;
+    let image = "https://en.wikipedia.org/wiki/File:Tetsumonchi_profile_picture.png";
+    if(userAPIResponse){
+      try{
+        console.log("API response picture");
+        console.log(userAPIResponse.data.results[0].picture.medium);
+        image = userAPIResponse.data.results[0].picture.medium;
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     res.render("reminder/index", { reminders, friendReminders, image });
