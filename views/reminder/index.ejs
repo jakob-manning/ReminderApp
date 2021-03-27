@@ -8,24 +8,24 @@
     <ul class="list-group">
       <% reminders.forEach(function (reminderItem) { %>
             <div class="card">
-                <div class="card-header">
-                    <strong>
-                        <%= reminderItem.dueDate %>
-                    </strong>
-                    <% if (reminderItem.completed == true) { %>
-                        <span class="badge badge-success">Done</span>
-                    <% } else if (reminderItem.completed == false) { %>
-                        <span class="badge badge-info">To Do</span>
-                    <% } %>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <%= reminderItem.title %>
-                    </h5>
-                    <p class="card-text"><%= reminderItem.description %></p>
-                    <br />
-                    <a href=<%= "/reminder/" + reminderItem.id %> class="btn btn-primary" >Update</a>
-                </div>
+                    <div class="card-header">
+                        <strong>
+                            <%= reminderItem.dueDate %>
+                        </strong>
+                        <% if (reminderItem.completed == true) { %>
+                            <span class="badge badge-success">Done</span>
+                        <% } else if (reminderItem.completed == false) { %>
+                            <span class="badge badge-info">To Do</span>
+                        <% } %>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= reminderItem.title %>
+                        </h5>
+                        <p class="card-text"><%= reminderItem.description %></p>
+                        <br />
+                        <a href=<%= "/reminder/" + reminderItem.id %> class="btn btn-primary" >Update</a>
+                    </div>
             </div>
         <br />
       <% }) %>

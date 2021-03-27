@@ -92,9 +92,18 @@ app.use((req, res, next) => {
     next();
 });
 
-// 404
-//TODO: update this with a 404 page
-app.get('/*', (req, res) => res.redirect("/"));
+// 404 Errors
+app.get('/*', (req, res) => {
+    res.render("util/404");
+});
+
+//Error Handling
+app.use((error, req, res, next) => {
+
+    //redirect to a nice error page
+    res.render("util/error", {error: error.message});
+
+})
 
 //Initialize Connection to Mongo-DB
 const DB_URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.49781.mongodb.net/${process.env.DB_DATABASE}?retryWrites=true&w=majority`

@@ -1,0 +1,28 @@
+<div class="container">
+  <br />
+  <div class="card">
+    <div class="card-header">
+      <strong>
+        Eeek!
+      </strong>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">
+        Something went wrong
+      </h5>
+      <p class="card-text">Sorry there, we couldn't complete that request!</p>
+      <p class="card-text"><%= error %></p>
+      <br />
+      <a onclick="goBack(event)" href="#" class="btn btn-success" >Take me Back</a>
+      <a href="/reminder" class="btn btn-primary" >Home</a>
+      <a href="mailto:jakob.maning@gmail.com" class="btn btn-secondary">Contact support</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const goBack = (event) => {
+    event.preventDefault()
+    window.history.back()
+  }
+</script>
